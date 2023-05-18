@@ -1,0 +1,270 @@
+package org.apache.spark.sql;
+
+class SparkSession {
+  org.apache.spark.sql.internal.SharedState sharedState;
+
+  org.apache.spark.sql.internal.SessionState sessionState;
+
+  org.apache.spark.sql.RuntimeConfig conf;
+
+  org.apache.spark.sql.Dataset emptyDataFrame;
+
+  org.apache.spark.sql.catalog.Catalog catalog;
+
+  org.apache.spark.sql.SparkSession$implicits$ implicits$module;
+
+  org.apache.spark.SparkContext sparkContext;
+
+  scala.Option existingSharedState;
+
+  scala.Option parentSessionState;
+
+  org.apache.spark.sql.SparkSessionExtensions extensions;
+
+  scala.collection.immutable.Map initialSessionOptions;
+
+  org.apache.spark.util.CallSite org$apache$spark$sql$SparkSession$$creationSite;
+
+  java.lang.String sessionUUID;
+
+  org.apache.spark.sql.SQLContext sqlContext;
+
+  org.slf4j.Logger org$apache$spark$internal$Logging$$log_;
+
+  byte bitmap$trans$0;
+
+  org.apache.spark.sql.SparkSession active();
+
+  scala.Option getDefaultSession();
+
+  scala.Option getActiveSession();
+
+  void clearDefaultSession();
+
+  void setDefaultSession(org.apache.spark.sql.SparkSession);
+
+  void clearActiveSession();
+
+  void setActiveSession(org.apache.spark.sql.SparkSession);
+
+  org.apache.spark.sql.SparkSession$Builder builder();
+
+  java.lang.String logName();
+
+  org.slf4j.Logger log();
+
+  void logInfo(scala.Function0);
+
+  void logDebug(scala.Function0);
+
+  void logTrace(scala.Function0);
+
+  void logWarning(scala.Function0);
+
+  void logError(scala.Function0);
+
+  void logInfo(scala.Function0, java.lang.Throwable);
+
+  void logDebug(scala.Function0, java.lang.Throwable);
+
+  void logTrace(scala.Function0, java.lang.Throwable);
+
+  void logWarning(scala.Function0, java.lang.Throwable);
+
+  void logError(scala.Function0, java.lang.Throwable);
+
+  boolean isTraceEnabled();
+
+  void initializeLogIfNecessary(boolean);
+
+  boolean initializeLogIfNecessary(boolean, boolean);
+
+  boolean initializeLogIfNecessary$default$2();
+
+  void initializeForcefully(boolean, boolean);
+
+  org.apache.spark.sql.SparkSession$implicits$ implicits();
+
+  org.slf4j.Logger org$apache$spark$internal$Logging$$log_();
+
+  void org$apache$spark$internal$Logging$$log__$eq(org.slf4j.Logger);
+
+  org.apache.spark.SparkContext sparkContext();
+
+  scala.Option existingSharedState();
+
+  scala.Option parentSessionState();
+
+  org.apache.spark.sql.SparkSessionExtensions extensions();
+
+  scala.collection.immutable.Map initialSessionOptions();
+
+  org.apache.spark.util.CallSite org$apache$spark$sql$SparkSession$$creationSite();
+
+  java.lang.String sessionUUID();
+
+  java.lang.String version();
+
+  org.apache.spark.sql.internal.SharedState sharedState$lzycompute();
+
+  org.apache.spark.sql.internal.SharedState sharedState();
+
+  org.apache.spark.sql.internal.SessionState sessionState$lzycompute();
+
+  org.apache.spark.sql.internal.SessionState sessionState();
+
+  org.apache.spark.sql.SQLContext sqlContext();
+
+  org.apache.spark.sql.RuntimeConfig conf$lzycompute();
+
+  org.apache.spark.sql.RuntimeConfig conf();
+
+  org.apache.spark.sql.util.ExecutionListenerManager listenerManager();
+
+  org.apache.spark.sql.ExperimentalMethods experimental();
+
+  org.apache.spark.sql.UDFRegistration udf();
+
+  org.apache.spark.sql.streaming.StreamingQueryManager streams();
+
+  org.apache.spark.sql.SparkSession newSession();
+
+  org.apache.spark.sql.SparkSession cloneSession();
+
+  org.apache.spark.sql.Dataset emptyDataFrame$lzycompute();
+
+  org.apache.spark.sql.Dataset emptyDataFrame();
+
+  org.apache.spark.sql.Dataset emptyDataset(org.apache.spark.sql.Encoder);
+
+  org.apache.spark.sql.Dataset createDataFrame(org.apache.spark.rdd.RDD, scala.reflect.api.TypeTags$TypeTag);
+
+  org.apache.spark.sql.Dataset createDataFrame(scala.collection.Seq, scala.reflect.api.TypeTags$TypeTag);
+
+  org.apache.spark.sql.Dataset createDataFrame(org.apache.spark.rdd.RDD, org.apache.spark.sql.types.StructType);
+
+  org.apache.spark.sql.Dataset createDataFrame(org.apache.spark.api.java.JavaRDD, org.apache.spark.sql.types.StructType);
+
+  org.apache.spark.sql.Dataset createDataFrame(java.util.List, org.apache.spark.sql.types.StructType);
+
+  org.apache.spark.sql.Dataset createDataFrame(org.apache.spark.rdd.RDD, java.lang.Class);
+
+  org.apache.spark.sql.Dataset createDataFrame(org.apache.spark.api.java.JavaRDD, java.lang.Class);
+
+  org.apache.spark.sql.Dataset createDataFrame(java.util.List, java.lang.Class);
+
+  org.apache.spark.sql.Dataset baseRelationToDataFrame(org.apache.spark.sql.sources.BaseRelation);
+
+  org.apache.spark.sql.Dataset createDataset(scala.collection.Seq, org.apache.spark.sql.Encoder);
+
+  org.apache.spark.sql.Dataset createDataset(org.apache.spark.rdd.RDD, org.apache.spark.sql.Encoder);
+
+  org.apache.spark.sql.Dataset createDataset(java.util.List, org.apache.spark.sql.Encoder);
+
+  org.apache.spark.sql.Dataset range(long);
+
+  org.apache.spark.sql.Dataset range(long, long);
+
+  org.apache.spark.sql.Dataset range(long, long, long);
+
+  org.apache.spark.sql.Dataset range(long, long, long, int);
+
+  org.apache.spark.sql.Dataset internalCreateDataFrame(org.apache.spark.rdd.RDD, org.apache.spark.sql.types.StructType, boolean);
+
+  boolean internalCreateDataFrame$default$3();
+
+  org.apache.spark.sql.catalog.Catalog catalog$lzycompute();
+
+  org.apache.spark.sql.catalog.Catalog catalog();
+
+  org.apache.spark.sql.Dataset table(java.lang.String);
+
+  org.apache.spark.sql.Dataset table(org.apache.spark.sql.catalyst.TableIdentifier);
+
+  org.apache.spark.sql.Dataset sql(java.lang.String, scala.collection.immutable.Map);
+
+  org.apache.spark.sql.Dataset sql(java.lang.String, java.util.Map);
+
+  org.apache.spark.sql.Dataset sql(java.lang.String);
+
+  org.apache.spark.sql.Dataset executeCommand(java.lang.String, java.lang.String, scala.collection.immutable.Map);
+
+  org.apache.spark.sql.DataFrameReader read();
+
+  org.apache.spark.sql.streaming.DataStreamReader readStream();
+
+  java.lang.Object time(scala.Function0);
+
+  void stop();
+
+  void close();
+
+  org.apache.spark.sql.types.DataType parseDataType(java.lang.String);
+
+  org.apache.spark.sql.Dataset applySchemaToPythonRDD(org.apache.spark.rdd.RDD, java.lang.String);
+
+  org.apache.spark.sql.Dataset applySchemaToPythonRDD(org.apache.spark.rdd.RDD, org.apache.spark.sql.types.StructType);
+
+  scala.collection.Seq getSchema(java.lang.Class);
+
+  java.lang.Object withActive(scala.Function0);
+
+  int leafNodeDefaultParallelism();
+
+  void implicits$lzycompute$1();
+
+  boolean $anonfun$new$2(org.apache.spark.sql.SparkSession);
+
+  org.apache.spark.sql.internal.SQLConf $anonfun$new$3(org.apache.spark.sql.SparkSession);
+
+  org.apache.spark.sql.internal.SQLConf $anonfun$new$4();
+
+  org.apache.spark.sql.internal.SQLConf $anonfun$new$1();
+
+  org.apache.spark.sql.internal.SharedState $anonfun$sharedState$1(org.apache.spark.sql.SparkSession);
+
+  org.apache.spark.sql.internal.SessionState $anonfun$sessionState$1(org.apache.spark.sql.SparkSession, org.apache.spark.sql.internal.SessionState);
+
+  org.apache.spark.sql.internal.SessionState $anonfun$sessionState$2(org.apache.spark.sql.SparkSession);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$1(org.apache.spark.sql.SparkSession, scala.reflect.api.TypeTags$TypeTag, org.apache.spark.rdd.RDD);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$2(org.apache.spark.sql.SparkSession, scala.reflect.api.TypeTags$TypeTag, scala.collection.Seq);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$3(org.apache.spark.sql.SparkSession, org.apache.spark.sql.types.StructType, org.apache.spark.rdd.RDD);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$4(org.apache.spark.sql.SparkSession, org.apache.spark.sql.types.StructType, java.util.List);
+
+  scala.collection.Iterator $anonfun$createDataFrame$6(java.lang.String, scala.collection.Seq, scala.collection.Iterator);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$5(org.apache.spark.sql.SparkSession, java.lang.Class, org.apache.spark.rdd.RDD);
+
+  org.apache.spark.sql.Dataset $anonfun$createDataFrame$7(org.apache.spark.sql.SparkSession, java.lang.Class, java.util.List);
+
+  org.apache.spark.sql.catalyst.InternalRow $anonfun$createDataset$1(org.apache.spark.sql.catalyst.encoders.ExpressionEncoder$Serializer, java.lang.Object);
+
+  org.apache.spark.sql.catalyst.expressions.Expression $anonfun$sql$3(java.lang.Object);
+
+  org.apache.spark.sql.catalyst.plans.logical.LogicalPlan $anonfun$sql$2(org.apache.spark.sql.SparkSession, java.lang.String, scala.collection.immutable.Map);
+
+  org.apache.spark.sql.Dataset $anonfun$sql$1(org.apache.spark.sql.SparkSession, java.lang.String, scala.collection.immutable.Map);
+
+  org.apache.spark.sql.catalyst.InternalRow $anonfun$applySchemaToPythonRDD$2(scala.Function1, java.lang.Object[]);
+
+  scala.collection.Iterator $anonfun$applySchemaToPythonRDD$1(org.apache.spark.sql.types.StructType, scala.collection.Iterator);
+
+  org.apache.spark.sql.catalyst.expressions.AttributeReference $anonfun$getSchema$1(org.apache.spark.sql.types.StructField);
+
+  int $anonfun$leafNodeDefaultParallelism$1(org.apache.spark.sql.SparkSession);
+
+  void <init>(org.apache.spark.SparkContext, scala.Option, scala.Option, org.apache.spark.sql.SparkSessionExtensions, scala.collection.immutable.Map);
+
+  void <init>(org.apache.spark.SparkContext, java.util.HashMap);
+
+  void <init>(org.apache.spark.SparkContext);
+
+  java.lang.Object $anonfun$new$2$adapted(org.apache.spark.sql.SparkSession);
+
+  java.lang.Object $deserializeLambda$(java.lang.invoke.SerializedLambda);
+
+}
