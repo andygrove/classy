@@ -1,12 +1,12 @@
 [package]
 name = "classy"
-description = "CLI for inspecting Java class and Jar files"
+description = "Classy: A Rust Library for Parsing Java Class Files"
 readme = "README.md"
 license = "Apache-2.0"
 homepage = "https://github.com/andygrove/classy"
 repository = "https://github.com/andygrove/classy"
 authors = ["Andy Grove <andygrove73@gmail.com>"]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 [dependencies]
