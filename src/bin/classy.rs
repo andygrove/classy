@@ -8,7 +8,7 @@ use std::process::exit;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "example", about = "An example of StructOpt usage.")]
+#[structopt(name = "classy", about = "Java class file utilities")]
 enum Opt {
     DecompileJar {
         /// Activate debug mode
