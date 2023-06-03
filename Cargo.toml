@@ -22,3 +22,7 @@ tempdir = "0.3.7"
 [[bin]]
 name = "classy"
 path = "src/bin/classy.rs"
+
+[[test]]
+name = "integration_tests"
+path = "tests/integration-tests.rs"

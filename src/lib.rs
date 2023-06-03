@@ -18,7 +18,7 @@ pub fn decompile_jar(
             let class = read_class(&mut file)?;
 
             // TODO replace .class with .java
-            let mut output_path = PathBuf::from(output.clone());
+            let mut output_path = PathBuf::from(output);
             for path in file.name().split('/') {
                 output_path.push(path);
                 if !path.ends_with(".class") {
@@ -46,7 +46,7 @@ pub fn write(class: &ClassFile, path: &PathBuf) -> io::Result<()> {
         Constant::ClassInfo { name_index } => {
             let class_name = class.get_constant_utf8(*name_index)?;
             let pos = class_name.rfind('/').unwrap();
-            writeln!(f, "package {};\n", &class_name[0..pos].replace("/", "."))?;
+            writeln!(f, "package {};\n", &class_name[0..pos].replace('/', "."))?;
             writeln!(f, "class {} {{", &class_name[pos + 1..])?;
         }
         _ => return Err(io::Error::new(ErrorKind::InvalidData, "this_class corrupt")),
@@ -175,7 +175,7 @@ fn read_constant_pool(mut rdr: impl Read) -> io::Result<Vec<Constant>> {
         let c = match tag {
             1 => {
                 let length = rdr.read_u16::<BigEndian>()? as usize;
-                let mut buf = vec![0; length as usize];
+                let mut buf = vec![0; length];
                 rdr.read_exact(&mut buf)?;
                 if let Ok(str) = String::from_utf8(buf.clone()) {
                     Ok(Constant::Utf8(str))
@@ -292,7 +292,7 @@ fn read_attributes(rdr: &mut impl Read, constant_pool: &[Constant]) -> io::Resul
                             });
                         }
 
-                        let attributes = read_attributes(rdr, &constant_pool)?;
+                        let attributes = read_attributes(rdr, constant_pool)?;
 
                         Ok(Attribute::Code {
                             max_stack,
@@ -338,22 +338,22 @@ fn read_attributes(rdr: &mut impl Read, constant_pool: &[Constant]) -> io::Resul
 /// Java Class File representation, based on https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html
 #[derive(Debug)]
 pub struct ClassFile {
-    minor_version: u16,
-    major_version: u16,
-    constant_pool: Vec<Constant>,
-    access_flags: u16,
-    this_class: u16,
-    super_class: u16,
-    interfaces: Vec<u16>,
-    field_info: Vec<FieldInfo>,
-    method_info: Vec<MethodInfo>,
-    attributes: Vec<Attribute>,
+    pub minor_version: u16,
+    pub major_version: u16,
+    pub constant_pool: Vec<Constant>,
+    pub access_flags: u16,
+    pub this_class: u16,
+    pub super_class: u16,
+    pub interfaces: Vec<u16>,
+    pub field_info: Vec<FieldInfo>,
+    pub method_info: Vec<MethodInfo>,
+    pub attributes: Vec<Attribute>,
 }
 
 impl ClassFile {
-    fn get_constant_utf8(&self, i: u16) -> io::Result<&str> {
+    pub fn get_constant_utf8(&self, i: u16) -> io::Result<&str> {
         match &self.constant_pool[i as usize - 1] {
-            Constant::Utf8(str) => Ok(&str),
+            Constant::Utf8(str) => Ok(str),
             _ => Err(io::Error::new(ErrorKind::InvalidData, "not utf8")),
         }
     }
@@ -408,18 +408,18 @@ pub enum Constant {
 
 #[derive(Debug)]
 pub struct FieldInfo {
-    access_flags: u16,
-    name_index: u16,
-    descriptor_index: u16,
-    attributes: Vec<Attribute>,
+    pub access_flags: u16,
+    pub name_index: u16,
+    pub descriptor_index: u16,
+    pub attributes: Vec<Attribute>,
 }
 
 #[derive(Debug)]
 pub struct MethodInfo {
-    access_flags: u16,
-    name_index: u16,
-    descriptor_index: u16,
-    attributes: Vec<Attribute>,
+    pub access_flags: u16,
+    pub name_index: u16,
+    pub descriptor_index: u16,
+    pub attributes: Vec<Attribute>,
 }
 
 #[derive(Debug)]
@@ -441,10 +441,10 @@ pub enum Attribute {
 
 #[derive(Debug)]
 pub struct ExceptionTable {
-    start_pc: u16,
-    end_pc: u16,
-    handler_pc: u16,
-    catch_type: u16,
+    pub start_pc: u16,
+    pub end_pc: u16,
+    pub handler_pc: u16,
+    pub catch_type: u16,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -464,8 +464,8 @@ pub enum JavaType {
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct JavaSignature {
-    arguments: Vec<JavaType>,
-    return_type: JavaType,
+    pub arguments: Vec<JavaType>,
+    pub return_type: JavaType,
 }
 
 impl Display for JavaType {
@@ -509,7 +509,7 @@ fn parse_type_from(t: &str, i: usize) -> io::Result<(JavaType, usize)> {
             let remaining = &t[i + 1..];
             let pos = remaining.find(';').unwrap();
             let class_name = remaining[0..pos].to_owned();
-            Ok((JavaType::Class(class_name.replace("/", ".")), i + pos + 2))
+            Ok((JavaType::Class(class_name.replace('/', ".")), i + pos + 2))
         }
         '[' => {
             let (t, pos) = parse_type_from(t, i + 1)?;
@@ -603,8 +603,15 @@ mod tests {
         let class: ClassFile = read_class(f)?;
         assert_eq!(52, class.major_version);
         assert_eq!(0, class.minor_version);
-        println!("Class JVM version: {}.{}", class.major_version, class.minor_version);
-        println!("Class has {} fields and {} methods", class.field_info.len(), class.method_info.len());
+        println!(
+            "Class JVM version: {}.{}",
+            class.major_version, class.minor_version
+        );
+        println!(
+            "Class has {} fields and {} methods",
+            class.field_info.len(),
+            class.method_info.len()
+        );
         Ok(())
     }
 
