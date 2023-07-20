@@ -230,6 +230,12 @@ fn read_constant_pool(mut rdr: impl Read) -> io::Result<Vec<Constant>> {
                 name_and_type_index: rdr.read_u16::<BigEndian>()?,
                 bootstrap_method_attr_index: rdr.read_u16::<BigEndian>()?,
             }),
+            19 => Ok(Constant::ModuleInfo {
+                name_index: rdr.read_u16::<BigEndian>()?,
+            }),
+            20 => Ok(Constant::PackageInfo {
+                name_index: rdr.read_u16::<BigEndian>()?,
+            }),
             other => Err(io::Error::new(
                 ErrorKind::InvalidData,
                 format!("Invalid or unsupported constant byte: {other}"),
@@ -403,6 +409,12 @@ pub enum Constant {
     InvokeDynamic {
         bootstrap_method_attr_index: u16,
         name_and_type_index: u16,
+    },
+    ModuleInfo {
+        name_index: u16,
+    },
+    PackageInfo {
+        name_index: u16,
     },
 }
 
