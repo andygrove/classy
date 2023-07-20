@@ -1,4 +1,4 @@
-use classy::decompile_jar;
+use classy::{decompile_jar, read_class};
 use glob::glob;
 use regex::Regex;
 use std::fs::File;
@@ -62,15 +62,29 @@ fn main() -> io::Result<()> {
                         let f = File::open(path)?;
                         let mut zip = zip::ZipArchive::new(f)?;
                         for i in 0..zip.len() {
-                            let file = zip.by_index(i)?;
+                            let mut file = zip.by_index(i)?;
                             if file.name().ends_with(".class") {
-                                //let class = read_class(&mut file)?;
+
+                                // check for match on class name
                                 if re.is_match(file.name()) {
                                     if !found {
                                         println!("Found matches in {name}:");
                                         found = true;
                                     }
-                                    println!("MATCH: {}", file.name());
+                                    println!("MATCH: CLASS: {}", file.name());
+                                }
+
+                                // check for match on method name
+                                let class = read_class(&mut file)?;
+                                for method in &class.method_info {
+                                    let method_name = class.get_constant_utf8(method.name_index)?;
+                                    if re.is_match(method_name) {
+                                        if !found {
+                                            println!("Found matches in {name}:");
+                                            found = true;
+                                        }
+                                        println!("MATCH: CLASS: {} METHOD: {}", file.name(), method_name);
+                                    }
                                 }
                             }
                         }
