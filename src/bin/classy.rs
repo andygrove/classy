@@ -1,4 +1,4 @@
-use classy::{ACC_STATIC, decompile_jar, read_class};
+use classy::{decompile_jar, read_class, ACC_STATIC};
 use glob::glob;
 use regex::Regex;
 use std::fs::File;
@@ -86,7 +86,24 @@ fn main() -> io::Result<()> {
                                             "MATCH: CLASS: {} METHOD: {} STATIC: {}",
                                             file.name(),
                                             method_name,
-                                            method.access_flags & ACC_STATIC
+                                            method.access_flags & ACC_STATIC > 0
+                                        );
+                                    }
+                                }
+
+                                // check for match on field name
+                                for field in &class.field_info {
+                                    let field_name = class.get_constant_utf8(field.name_index)?;
+                                    if re.is_match(field_name) {
+                                        if !found {
+                                            println!("Found matches in {name}:");
+                                            found = true;
+                                        }
+                                        println!(
+                                            "MATCH: CLASS: {} FIELD: {} STATIC: {}",
+                                            file.name(),
+                                            field_name,
+                                            field.access_flags & ACC_STATIC > 0
                                         );
                                     }
                                 }
